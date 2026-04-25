@@ -1,0 +1,722 @@
+{
+  "_meta": {
+    "schema": "clerkAI-case-v2.0",
+    "upgradedAt": "2025-04-25",
+    "author": "ClerkAI Engine",
+    "notes": "Fully upgraded case: dynamic responses, state-aware conditions, progression engine, consequence tracking, enhanced scoring"
+  },
+
+  "caseId": "case_med_ckd_001",
+  "discipline": "med",
+  "difficulty": "intermediate",
+  "timeLimit": 600,
+  "hospital": "UCH Ibadan",
+
+  "patient": {
+    "name": "Grace Taiwo",
+    "age": 45,
+    "sex": "Female",
+    "occupation": "Teacher",
+    "avatar": "👩",
+    "tone": "worried",
+    "basePersonality": "cooperative but anxious — she is a teacher used to being in control and dislikes not understanding what is happening to her body",
+    "toneModifiers": {
+      "cooperative": ["hpc_onset", "hpc_character", "sr_urinary", "sr_appetite"],
+      "guarded": ["meds_general"],
+      "distressed": ["ix_lft", "ix_ultrasound"],
+      "confused": ["exam_general"]
+    }
+  },
+
+  "state": {
+    "severity": "moderate",
+    "uraemiaLevel": 2,
+    "hyperkalaemiaFlag": true,
+    "oedemaGrade": 2,
+    "bpControl": "uncontrolled",
+    "nauseaActive": true,
+    "conscioussness": "alert",
+    "mistakes": [],
+    "unlockedIntents": [],
+    "askedIntents": [],
+    "flaggedComplications": [],
+    "elapsedTime": 0,
+    "scoreBreakdown": {
+      "historyCoverage": 0,
+      "examCompleteness": 0,
+      "investigationQuality": 0,
+      "managementScore": 0,
+      "trapPenalties": 0
+    }
+  },
+
+  "presentingComplaint": "Progressive fatigue, nausea and ankle swelling for 2 months",
+
+  "diagnosis": {
+    "primary": "Chronic Kidney Disease (Stage 4)",
+    "keywords": ["ckd", "chronic kidney disease", "renal failure", "chronic renal failure", "uraemia", "kidney disease", "renal impairment"],
+    "icdCode": "N18.4"
+  },
+
+  "differentials": [
+    { "name": "Chronic Kidney Disease", "color": "#6B4520", "initial": 40 },
+    { "name": "Nephrotic Syndrome", "color": "#5B3F8A", "initial": 25 },
+    { "name": "Decompensated Heart Failure", "color": "#2A5A8A", "initial": 20 },
+    { "name": "Hypothyroidism", "color": "#7A8F9E", "initial": 15 }
+  ],
+
+  "intentMap": {
+
+    "hpc_onset": {
+      "type": "history",
+      "label": "Onset & Duration",
+      "category": "history",
+      "scoringWeight": "mustAsk",
+      "points": 15,
+      "tone": "worried",
+      "responses": [
+        "I've been feeling very tired for about 2 months now. The nausea started maybe 6 weeks ago, and my legs began swelling about 3 weeks back.",
+        "It started gradually — I thought it was just stress from work. But 2 months later and I'm still not better.",
+        "The tiredness came first, then the sickness in the mornings. The swelling in my ankles started more recently — maybe 3 weeks ago."
+      ],
+      "conditions": {
+        "uraemiaLevel>=3": "Doctor, honestly I've been feeling like I'm dying for 2 months. The fatigue is unbearable, I can barely lift myself.",
+        "askedAfter:hpc_character": "As I said, it's been about 2 months — but it's been getting much worse each week."
+      }
+    },
+
+    "hpc_character": {
+      "type": "history",
+      "label": "Character of Symptoms",
+      "category": "history",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "tone": "worried",
+      "responses": [
+        "The fatigue is overwhelming — I can barely get through a school day. I used to be so active. The nausea is worst in the morning. I've lost about 5kg without trying.",
+        "I feel heavy all the time. Even walking to the bathroom leaves me short of breath. The nausea hits me every morning when I wake up.",
+        "It's not normal tiredness. This is different — bone-deep exhaustion. And I keep losing weight even though I'm eating whatever I can stomach."
+      ],
+      "conditions": {
+        "severity=severe": "Doctor, I cannot even stand at the board anymore. I had to take medical leave. Something is very wrong.",
+        "nauseaActive=true": "The morning nausea is terrible. I've vomited twice this week. Food just doesn't agree with me anymore."
+      }
+    },
+
+    "hpc_aggravating": {
+      "type": "history",
+      "label": "Aggravating Factors",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "cooperative",
+      "responses": [
+        "Standing for long periods makes the leg swelling worse. Activity makes the breathlessness worse.",
+        "The nausea gets worse when I eat — especially meat or eggs. Protein seems to make everything worse.",
+        "Lying flat isn't comfortable — my breathing feels a bit better sitting up."
+      ],
+      "conditions": {}
+    },
+
+    "hpc_relieving": {
+      "type": "history",
+      "label": "Relieving Factors",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "cooperative",
+      "responses": [
+        "Nothing really helps the fatigue. Resting the legs helps the swelling a little.",
+        "I take ibuprofen sometimes for the back pain and it helps that, but nothing helps the tiredness.",
+        "Sitting with my legs up helps a small bit. But the nausea and tiredness don't go away."
+      ],
+      "conditions": {
+        "trapMedsMentioned": "I've been taking ibuprofen regularly — it helps my back pain, so I take it almost every day."
+      }
+    },
+
+    "sr_urinary": {
+      "type": "history",
+      "label": "Urinary Symptoms",
+      "category": "history",
+      "scoringWeight": "mustAsk",
+      "points": 15,
+      "tone": "slightly_embarrassed",
+      "responses": [
+        "My urine has been foamy — like it has bubbles that don't go away. And I'm passing less than usual. The colour is darker too, more like tea.",
+        "Yes, I noticed foam in my urine weeks ago but didn't think much of it. I'm not urinating as much as I should be.",
+        "The urine is foamy and dark. No burning or pain. But I feel like I'm not producing enough — the amount is definitely reduced."
+      ],
+      "conditions": {
+        "ix_urinalysis:asked": "Yes, those results match what I've been noticing — the foamy urine especially.",
+        "uraemiaLevel>=3": "Honestly doctor, I'm barely urinating. Maybe 2 or 3 times a day, very small amounts."
+      }
+    },
+
+    "sr_appetite": {
+      "type": "history",
+      "label": "Appetite & Weight",
+      "category": "history",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "tone": "worried",
+      "responses": [
+        "My appetite is very poor. Food doesn't appeal to me. I feel sick after eating — especially after protein like meat or fish. I've lost about 5kg in 2 months.",
+        "I force myself to eat but can barely manage. My husband notices I've lost weight. I used to love cooking but now the smell of food makes me nauseous.",
+        "Eating makes me feel worse, not better. Especially protein — eggs, meat, even beans. I've lost weight without trying."
+      ],
+      "conditions": {
+        "nauseaActive=true": "The morning sickness is the worst part. I barely managed breakfast today before coming here.",
+        "uraemiaLevel>=2": "I've been told uraemia causes this — the build-up of waste products affects appetite. Is that what's happening to me?"
+      }
+    },
+
+    "sr_cardiovascular": {
+      "type": "history",
+      "label": "Cardiovascular Symptoms",
+      "category": "history",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "tone": "cooperative",
+      "responses": [
+        "I get short of breath when I climb stairs — it's gotten worse over the past month. No chest pain. My heart doesn't race.",
+        "Breathlessness on effort, yes. I sleep with 2 pillows now — I feel more comfortable that way.",
+        "I haven't had chest pain. But I do get palpitations sometimes — my heart feels like it's fluttering."
+      ],
+      "conditions": {
+        "hyperkalaemiaFlag=true": "I sometimes feel my heart skipping beats, doctor. Is that something to worry about?"
+      }
+    },
+
+    "sr_neurology": {
+      "type": "history",
+      "label": "Neurological Symptoms",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "worried",
+      "responses": [
+        "I've been having headaches — almost every day for the past 2 weeks. And I find it hard to concentrate at work.",
+        "My memory isn't sharp. I write notes more than I used to. The headaches are mostly at the back of my head.",
+        "I sometimes feel restless at night — a crawling feeling in my legs. My husband says I kick a lot in my sleep."
+      ],
+      "conditions": {
+        "bpControl=uncontrolled": "The headaches are bad, especially in the morning — very severe, at the back of my head."
+      }
+    },
+
+    "sr_skin": {
+      "type": "history",
+      "label": "Skin Symptoms",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "cooperative",
+      "responses": [
+        "Yes — I've been itching all over for about a month. My skin feels dry and I scratch especially at night.",
+        "The itching is unbearable at times — mostly on my back and arms. Nothing seems to relieve it.",
+        "I scratch without even realising it. My skin looks different too — slightly yellowish."
+      ],
+      "conditions": {
+        "uraemiaLevel>=2": "The itching started when everything else got worse. I've scratched my skin raw in some places."
+      }
+    },
+
+    "pmh_general": {
+      "type": "history",
+      "label": "Past Medical History",
+      "category": "history",
+      "scoringWeight": "mustAsk",
+      "points": 15,
+      "tone": "cooperative",
+      "responses": [
+        "I have type 2 diabetes for 10 years and high blood pressure for 8 years. I was told 2 years ago that my kidneys were 'a bit affected' but I didn't follow up — I thought they meant it was minor.",
+        "Diabetes and hypertension — both for many years. My previous doctor mentioned something about the kidneys once but I was busy and didn't go back.",
+        "High blood pressure and sugar diabetes. I've had both for a long time. I was also told my kidneys showed something on a test 2 years ago."
+      ],
+      "conditions": {
+        "ix_lft:asked": "Yes, those kidney numbers — the doctor mentioned something similar before but not this bad.",
+        "askedAfter:meds_general": "Yes, and I've been on medication for both the blood pressure and the diabetes for years."
+      }
+    },
+
+    "pmh_family": {
+      "type": "history",
+      "label": "Family History",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "cooperative",
+      "responses": [
+        "My mother had high blood pressure and died from kidney problems — but we weren't told the exact diagnosis.",
+        "Hypertension runs in my family. My father and one sister also have it. I don't know of any kidney disease.",
+        "My mother's health was poor for years before she died. The doctors said it was 'kidney failure' but I was young and didn't understand."
+      ],
+      "conditions": {}
+    },
+
+    "pmh_surgical": {
+      "type": "history",
+      "label": "Surgical History",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 3,
+      "tone": "cooperative",
+      "responses": [
+        "I had a Caesarean section 15 years ago for my last child. No other operations.",
+        "Only surgery was a CS — no complications. No other procedures.",
+        "Just the CS years ago. Nothing else surgically."
+      ],
+      "conditions": {}
+    },
+
+    "social_history": {
+      "type": "history",
+      "label": "Social History",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 5,
+      "tone": "cooperative",
+      "responses": [
+        "I'm a secondary school teacher. Married, 3 children. I don't smoke or drink alcohol. We have clean water at home. I cook with firewood sometimes.",
+        "Teacher, married. No alcohol, no tobacco. I'm under a lot of stress at work — large class sizes and I take on extra duties.",
+        "I live with my husband and youngest child. No smoking. I sometimes use local herbs — my neighbour recommended something for energy."
+      ],
+      "conditions": {}
+    },
+
+    "meds_general": {
+      "type": "history",
+      "label": "Medications",
+      "category": "history",
+      "scoringWeight": "mustAsk",
+      "points": 15,
+      "tone": "guarded",
+      "trapTrigger": true,
+      "responses": [
+        "Metformin 1g twice a day, Lisinopril 10mg, and Amlodipine 5mg. And — I take ibuprofen regularly for back pain. Sometimes every day.",
+        "The doctor gave me Metformin for the diabetes and Lisinopril for the blood pressure. Also Amlodipine. I buy ibuprofen from the pharmacy for my back — it's been years I've been taking it.",
+        "Metformin, Lisinopril, Amlodipine — those are my prescribed ones. I also take pain killers. Ibuprofen mostly. Almost daily."
+      ],
+      "conditions": {
+        "trapTriggered:nsaid": "Yes, I already told you — ibuprofen. Is that a problem? The pharmacist never mentioned anything."
+      },
+      "clinicalNote": "Contains 2 trap medications: metformin (lactic acidosis risk in CKD eGFR<30) and ibuprofen (nephrotoxic NSAID). Learner must identify and address both."
+    },
+
+    "allergies": {
+      "type": "history",
+      "label": "Allergies",
+      "category": "history",
+      "scoringWeight": "optional",
+      "points": 3,
+      "tone": "cooperative",
+      "responses": [
+        "No known drug allergies. I've taken penicillin before without problems.",
+        "None that I know of. No reactions to any medication.",
+        "No allergies. I tolerate all medications I've been given."
+      ],
+      "conditions": {}
+    },
+
+    "exam_general": {
+      "type": "exam",
+      "label": "General Examination",
+      "category": "exam",
+      "scoringWeight": "mustAsk",
+      "points": 15,
+      "unlockConditions": ["pmh_general"],
+      "responses": [
+        "General: Patient is pale — conjunctival pallor present. There is a subtle uraemic tinge (yellowish-brown) to the skin. Scratch marks visible on arms and back (pruritus). BP 176/104 mmHg. Pulse 88 bpm regular. RR 18/min. SpO2 97% on air. Bilateral pitting oedema 2+ to ankles. Bilateral periorbital puffiness noted.",
+        "On examination: Pallor +2, uraemic fetor on breath. Skin: excoriation marks, dry, slightly discoloured. Vitals: BP 176/104, HR 88 bpm, Temp 36.8°C. Pitting oedema bilaterally to mid-shin. Puffy eyes."
+      ],
+      "conditions": {
+        "uraemiaLevel>=3": "⚠️ WORSENING: Patient now appears more drowsy. GCS 14/15. Uraemic fetor pronounced. BP now 192/110. Oedema 3+ to knees.",
+        "bpControl=uncontrolled": "BP remains severely elevated at 176/104 despite antihypertensive therapy — indicates target organ damage."
+      }
+    },
+
+    "exam_cardiovascular": {
+      "type": "exam",
+      "label": "Cardiovascular Examination",
+      "category": "exam",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "unlockConditions": ["pmh_general"],
+      "responses": [
+        "CVS: JVP elevated 4cm above sternal angle. Apex beat displaced to 6th intercostal space, anterior axillary line (cardiomegaly). S1 S2 heard with a soft S3 gallop. No significant murmurs. Peripheral pulses present.",
+        "Cardiovascular: Raised JVP. Displaced apex beat — cardiomegaly likely. Soft third heart sound. Tachycardia not present. Peripheral oedema bilateral."
+      ],
+      "conditions": {
+        "hyperkalaemiaFlag=true": "⚠️ ALERT: Monitor for arrhythmia. Potassium 6.1 mmol/L — cardiac membrane at risk."
+      }
+    },
+
+    "exam_respiratory": {
+      "type": "exam",
+      "label": "Respiratory Examination",
+      "category": "exam",
+      "scoringWeight": "optional",
+      "points": 5,
+      "unlockConditions": [],
+      "responses": [
+        "Respiratory: Mild bibasal fine crepitations — likely fluid overload. No pleural effusion clinically. RR 18/min. SpO2 97%.",
+        "Chest: Bilateral basal crackles. No wheeze. Resonant percussion. Mild pulmonary congestion pattern."
+      ],
+      "conditions": {
+        "oedemaGrade>=3": "Significant bilateral crackles extending to mid-zones. Consider pulmonary oedema."
+      }
+    },
+
+    "exam_abdomen": {
+      "type": "exam",
+      "label": "Abdominal Examination",
+      "category": "exam",
+      "scoringWeight": "mustAsk",
+      "points": 10,
+      "unlockConditions": ["hpc_onset"],
+      "responses": [
+        "Abdomen: Soft, mildly tender in loin regions bilaterally. No renal masses palpable. No renal bruit on auscultation. Bladder not palpable. No hepatomegaly. No splenomegaly. No ascites (shifting dullness absent).",
+        "Abdominal exam: No organomegaly. No palpable kidneys — bilaterally. No renal angle tenderness. No ascites. Bladder not palpable."
+      ],
+      "conditions": {}
+    },
+
+    "exam_neuro": {
+      "type": "exam",
+      "label": "Neurological Examination",
+      "category": "exam",
+      "scoringWeight": "optional",
+      "points": 5,
+      "unlockConditions": [],
+      "responses": [
+        "Neuro: Alert and oriented to time, place, person. GCS 15/15. Mild asterixis (metabolic flap) on sustained wrist extension — consistent with uraemic encephalopathy early stage.",
+        "Neurological: Conscious and oriented. Mild asterixis present bilaterally. Peripheral neuropathy signs: reduced vibration sense in feet bilaterally."
+      ],
+      "conditions": {
+        "uraemiaLevel>=3": "⚠️ PROGRESSION: GCS now 13/15. Marked asterixis. Confusion — patient is not oriented to time. Uraemic encephalopathy advancing."
+      }
+    },
+
+    "ix_urinalysis": {
+      "type": "investigation",
+      "label": "Urinalysis / Dipstick",
+      "category": "investigation",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "unlockConditions": ["sr_urinary"],
+      "cost": 500,
+      "responses": [
+        "Urinalysis:\n• Protein: 3+ (significant proteinuria)\n• Blood: 2+ (haematuria)\n• Glucose: 2+ (glycosuria — uncontrolled DM)\n• Nitrites: Negative\n• Leucocytes: Negative\n\nSpot ACR: 420 mg/mmol — severely increased albuminuria (CKD diagnostic criterion exceeded)",
+        "Dipstick urine:\n• Heavy proteinuria (3+)\n• Blood 2+\n• Glucose 2+\n• No infection markers\n\nACR 420 mg/mmol — severely elevated. This level indicates significant glomerular damage."
+      ],
+      "conditions": {
+        "ix_lft:asked": "With ACR 420 and creatinine this elevated, the clinical picture is consistent with advanced diabetic nephropathy."
+      }
+    },
+
+    "ix_fbc": {
+      "type": "investigation",
+      "label": "Full Blood Count",
+      "category": "investigation",
+      "scoringWeight": "shouldAsk",
+      "points": 10,
+      "unlockConditions": ["exam_general"],
+      "cost": 2000,
+      "responses": [
+        "FBC:\n• Hb: 8.2 g/dL ↓ — normocytic normochromic anaemia (anaemia of CKD — reduced EPO production)\n• MCV: 84 fL (normocytic)\n• WBC: 8.4 × 10⁹/L — normal\n• Neutrophils: 5.2 × 10⁹/L — normal\n• Platelets: 280 × 10⁹/L — normal\n\nComment: Anaemia consistent with reduced erythropoietin in CKD. No evidence of haemolysis or iron deficiency pattern.",
+        "Blood count:\n• Anaemia: Hb 8.2 — normocytic (EPO deficiency)\n• WBC and platelets: within normal limits\n• No thrombocytopenia to suggest HELLP or TTP"
+      ],
+      "conditions": {}
+    },
+
+    "ix_lft": {
+      "type": "investigation",
+      "label": "Renal Function Tests (U&E, Creatinine, eGFR)",
+      "category": "investigation",
+      "scoringWeight": "mustAsk",
+      "points": 20,
+      "unlockConditions": ["pmh_general", "sr_urinary"],
+      "cost": 3000,
+      "responses": [
+        "Renal Function:\n• Creatinine: 486 μmol/L ↑↑ (Normal: 45–90)\n• eGFR: 11 mL/min/1.73m² → CKD Stage 5 (ESRD)\n• Urea: 28 mmol/L ↑↑ (uraemia)\n• Potassium: 6.1 mmol/L ↑↑ ← HYPERKALAEMIA — arrhythmia risk\n• Sodium: 134 mmol/L (mild hyponatraemia)\n• Bicarbonate: 14 mmol/L ↓ (metabolic acidosis — high anion gap)\n• Phosphate: 2.1 mmol/L ↑ (hyperphosphataemia)\n• Calcium: 1.9 mmol/L ↓ (hypocalcaemia — renal osteodystrophy)\n\n⚠️ CRITICAL: K⁺ 6.1 requires urgent management — ECG now.",
+        "U&E / Creatinine:\n• eGFR 11 — end-stage territory\n• Cr 486 — severely elevated\n• K⁺ 6.1 — dangerously high, risk of fatal arrhythmia\n• Bicarb 14 — metabolic acidosis\n• Urea 28 — uraemia confirmed"
+      ],
+      "conditions": {
+        "complications:miss_hyperkalaemia": "⛔ COMPLICATION TRIGGERED: Hyperkalaemia (K 6.1) was not acted upon in time. See progression event.",
+        "state:ix_lft_acknowledged": "Given K 6.1, what is your immediate management plan for the hyperkalaemia?"
+      }
+    },
+
+    "ix_lft_liver": {
+      "type": "investigation",
+      "label": "Liver Function Tests",
+      "category": "investigation",
+      "scoringWeight": "optional",
+      "points": 5,
+      "unlockConditions": [],
+      "cost": 2500,
+      "responses": [
+        "LFTs:\n• Total Bilirubin: 14 μmol/L (normal)\n• ALT: 28 U/L (normal)\n• AST: 32 U/L (normal)\n• ALP: 145 U/L ↑ (mild elevation — renal osteodystrophy related)\n• Albumin: 28 g/L ↓ (hypoalbuminaemia — nephrotic losses + poor nutrition)\n• Total Protein: 52 g/L ↓",
+        "Liver function: No hepatocellular damage. Mildly elevated ALP (bone related). Low albumin consistent with proteinuria and uraemia."
+      ],
+      "conditions": {}
+    },
+
+    "ix_rbs": {
+      "type": "investigation",
+      "label": "Random Blood Sugar / HbA1c",
+      "category": "investigation",
+      "scoringWeight": "shouldAsk",
+      "points": 8,
+      "unlockConditions": ["pmh_general"],
+      "cost": 1000,
+      "responses": [
+        "RBS: 11.4 mmol/L (poorly controlled diabetes)\nHbA1c: 9.8% — very poor glycaemic control over 3 months\n\nNote: With eGFR 11, HbA1c may be falsely low due to shortened RBC lifespan. Fructosamine may be more accurate.",
+        "Blood glucose: Elevated at 11.4 mmol/L\nHbA1c: 9.8% — suboptimal control\nIn advanced CKD, HbA1c reliability is reduced. Consider fructosamine."
+      ],
+      "conditions": {}
+    },
+
+    "ix_ecg": {
+      "type": "investigation",
+      "label": "ECG",
+      "category": "investigation",
+      "scoringWeight": "critical",
+      "points": 15,
+      "unlockConditions": ["ix_lft"],
+      "cost": 1500,
+      "criticalTrigger": "hyperkalaemiaFlag",
+      "responses": [
+        "ECG:\n• Rate: 88 bpm\n• Rhythm: Sinus rhythm\n• PR interval: 0.22s (borderline prolonged)\n• QRS: 0.10s\n• T waves: TALL PEAKED T waves in V1–V4 ← HYPERKALAEMIA SIGN\n• No ST changes\n\n⚠️ Peaked T waves = impending cardiac toxicity from K⁺ 6.1. URGENT MANAGEMENT REQUIRED.",
+        "ECG findings: Sinus rhythm 88bpm. Peaked T waves across precordial leads — classical hyperkalaemia pattern. Borderline PR prolongation. No VT/VF at present — but this may change without treatment."
+      ],
+      "conditions": {
+        "complications:miss_hyperkalaemia": "⛔ ECG now shows widened QRS — progression to cardiac toxicity. Patient requires emergency intervention."
+      }
+    },
+
+    "ix_ultrasound": {
+      "type": "investigation",
+      "label": "Renal Ultrasound",
+      "category": "investigation",
+      "scoringWeight": "shouldAsk",
+      "points": 12,
+      "unlockConditions": ["ix_lft"],
+      "cost": 5000,
+      "responses": [
+        "Renal USS:\n• Right kidney: 8.2 cm (↓ — normal >9 cm)\n• Left kidney: 8.0 cm (↓)\n• Echogenicity: Increased bilaterally — echogenic cortex\n• Corticomedullary differentiation: Reduced\n• Cortical thickness: Thinned bilaterally\n• No hydronephrosis\n• No obstruction\n• No renal masses or calculi\n\n→ Bilateral small echogenic kidneys = hallmark of CHRONIC kidney disease (not acute). This confirms chronicity.",
+        "USS Kidneys:\n• Both kidneys shrunken — 8.0–8.2 cm\n• Increased echogenicity\n• Cortical thinning\n• No obstruction\n\nThis pattern is diagnostic of chronic parenchymal disease — irreversible."
+      ],
+      "conditions": {}
+    },
+
+    "ix_urine_mc_s": {
+      "type": "investigation",
+      "label": "Urine M/C/S",
+      "category": "investigation",
+      "scoringWeight": "optional",
+      "points": 5,
+      "unlockConditions": ["ix_urinalysis"],
+      "cost": 1500,
+      "responses": [
+        "Urine M/C/S:\n• No growth after 48 hours\n• No significant bacteriuria\n• RBCs on microscopy (haematuria — glomerular origin, dysmorphic red cells)\n• Granular casts present — consistent with tubular damage\n• No WBC casts"
+      ],
+      "conditions": {}
+    },
+
+    "ix_bone_profile": {
+      "type": "investigation",
+      "label": "Bone Profile / PTH",
+      "category": "investigation",
+      "scoringWeight": "optional",
+      "points": 5,
+      "unlockConditions": ["ix_lft"],
+      "cost": 4000,
+      "responses": [
+        "Bone profile:\n• Calcium: 1.9 mmol/L ↓ (hypocalcaemia)\n• Phosphate: 2.1 mmol/L ↑ (hyperphosphataemia)\n• PTH: 380 pg/mL ↑↑ (secondary hyperparathyroidism)\n• Vitamin D: 12 ng/mL ↓ (deficiency — reduced renal activation)\n\nComment: Consistent with CKD-MBD (Mineral Bone Disorder)"
+      ],
+      "conditions": {}
+    }
+  },
+
+  "unlockConditions": {
+    "ix_lft": ["pmh_general", "sr_urinary"],
+    "ix_urinalysis": ["sr_urinary"],
+    "ix_ultrasound": ["ix_lft"],
+    "ix_ecg": ["ix_lft"],
+    "ix_urine_mc_s": ["ix_urinalysis"],
+    "ix_bone_profile": ["ix_lft"],
+    "ix_rbs": ["pmh_general"],
+    "exam_general": ["pmh_general"],
+    "exam_cardiovascular": ["pmh_general"],
+    "exam_abdomen": ["hpc_onset"]
+  },
+
+  "trapActions": [
+    {
+      "id": "trap_nsaid",
+      "pattern": "nsaid|ibuprofen|diclofenac|naproxen|mefenamic|indomethacin|celebrex|celecoxib",
+      "context": "prescribe|give|continue|recommend|use|take|administer|start",
+      "penalty": 20,
+      "severity": "critical",
+      "complicationTrigger": "nsaid_nephrotoxicity",
+      "explanation": "⛔ NSAIDs are nephrotoxic and absolutely contraindicated in CKD. They reduce renal blood flow via prostaglandin inhibition, further impairing an already critically reduced eGFR. This could precipitate acute-on-chronic kidney failure. Deducted −20 pts.",
+      "correctAction": "Stop ibuprofen immediately. Switch to paracetamol (acetaminophen) for analgesia — it is renally safe. Opioids can be used cautiously at reduced doses if needed."
+    },
+    {
+      "id": "trap_metformin",
+      "pattern": "metformin|glucophage|biguanide",
+      "context": "continue|keep|maintain|prescribe|restart",
+      "penalty": 15,
+      "severity": "major",
+      "complicationTrigger": "lactic_acidosis_risk",
+      "explanation": "⚠️ Metformin must be withheld when eGFR <30 mL/min/1.73m². With eGFR of 11, there is serious risk of metformin accumulation and potentially fatal lactic acidosis. Deducted −15 pts.",
+      "correctAction": "Stop metformin. Switch glycaemic management to insulin (dose-adjusted for eGFR) or linagliptin (a DPP-4 inhibitor safe in CKD). Monitor glucose closely."
+    },
+    {
+      "id": "trap_ace_hyperK",
+      "pattern": "lisinopril|enalapril|ramipril|perindopril|ace inhibitor|acei",
+      "context": "increase dose|double|uptitrate|add",
+      "penalty": 10,
+      "severity": "moderate",
+      "complicationTrigger": null,
+      "explanation": "⚠️ ACE inhibitors increase potassium. With K⁺ already at 6.1 mmol/L, increasing the ACE inhibitor dose risks worsening hyperkalaemia. The existing ACE inhibitor is protective for the kidneys long-term, but dose escalation here is dangerous. Deducted −10 pts."
+    },
+    {
+      "id": "trap_contrast",
+      "pattern": "ct.*contrast|contrast.*ct|iv contrast|contrast nephropathy",
+      "context": "order|request|arrange|give",
+      "penalty": 15,
+      "severity": "major",
+      "complicationTrigger": "contrast_nephropathy",
+      "explanation": "⚠️ IV contrast is relatively contraindicated in advanced CKD (eGFR <30). Risk of contrast-induced nephropathy which can precipitate dialysis. If CT is necessary, use non-contrast CT or pre-hydrate with IV normal saline and minimise contrast volume. Deducted −15 pts."
+    }
+  ],
+
+  "scoringMap": {
+    "mustAsk": ["pmh_general", "meds_general", "sr_urinary", "ix_lft", "exam_general", "exam_abdomen", "hpc_onset"],
+    "shouldAsk": ["ix_urinalysis", "ix_ultrasound", "ix_fbc", "hpc_character", "sr_appetite", "sr_cardiovascular", "ix_ecg", "ix_rbs", "exam_cardiovascular"],
+    "optional": ["hpc_aggravating", "hpc_relieving", "sr_neurology", "sr_skin", "pmh_family", "pmh_surgical", "social_history", "allergies", "ix_lft_liver", "ix_urine_mc_s", "ix_bone_profile", "exam_respiratory", "exam_neuro"],
+    "pointsBase": 5,
+    "pointsMust": 15,
+    "pointsShould": 10,
+    "pointsOptional": 5,
+    "maxScore": 200,
+    "scoring": {
+      "historyCoverageWeight": 0.35,
+      "examCompletenessWeight": 0.25,
+      "investigationQualityWeight": 0.30,
+      "managementWeight": 0.10
+    },
+    "historyMustItems": ["hpc_onset", "pmh_general", "meds_general", "sr_urinary"],
+    "examMustItems": ["exam_general", "exam_abdomen"],
+    "investigationMustItems": ["ix_lft", "ix_urinalysis"],
+    "grades": {
+      "distinction": 160,
+      "pass": 120,
+      "borderline": 100,
+      "fail": 0
+    }
+  },
+
+  "timeEvents": [
+    {
+      "time": 120,
+      "id": "evt_reminder_potassium",
+      "event": "🔔 SYSTEM: Lab nurse calls — 'Doctor, have you seen the potassium result? It's 6.1.'",
+      "type": "alert",
+      "targetState": "hyperkalaemiaFlag",
+      "triggerIfMissed": "ix_lft"
+    },
+    {
+      "time": 300,
+      "id": "evt_drowsiness",
+      "event": "⚠️ PROGRESSION: Patient becoming drowsy. GCS drops to 13/15. Uraemic encephalopathy worsening. Asterixis more pronounced.",
+      "type": "progression",
+      "stateChange": { "uraemiaLevel": 3, "conscioussness": "drowsy" },
+      "triggerCondition": "ix_lft:not_asked OR ecg:not_asked"
+    },
+    {
+      "time": 450,
+      "id": "evt_arrhythmia",
+      "event": "🚨 CRITICAL EVENT: Monitor alarms. Patient has palpitations, looks pale and sweaty. Telemetry shows peaked T waves progressing to widened QRS.",
+      "type": "complication",
+      "stateChange": { "hyperkalaemiaFlag": "critical" },
+      "triggerCondition": "hyperkalaemia:not_managed AND ecg:not_asked"
+    },
+    {
+      "time": 550,
+      "id": "evt_deadline",
+      "event": "⏰ Time limit approaching. Summarise your assessment and initial management plan.",
+      "type": "system"
+    }
+  ],
+
+  "complications": [
+    {
+      "id": "complication_arrhythmia",
+      "trigger": "miss_hyperkalaemia",
+      "triggerCondition": "ix_lft:asked AND ix_ecg:not_asked AND time > 300",
+      "event": "🚨 CARDIAC ARRHYTHMIA: K⁺ 6.1 unmanaged → VT/VF risk. Patient clutches chest. Get crash cart.",
+      "penaltyPoints": 25,
+      "recoverable": true,
+      "recoveryActions": ["calcium gluconate IV", "dextrose insulin IV", "nebulised salbutamol", "calcium resonium", "dialysis"],
+      "teachingPoint": "Hyperkalaemia (K⁺ >6.0) in CKD requires immediate ECG and urgent management: IV calcium gluconate (cardioprotection), insulin-dextrose (shifts K into cells), consider dialysis."
+    },
+    {
+      "id": "complication_nsaid_aki",
+      "trigger": "nsaid_nephrotoxicity",
+      "triggerCondition": "trapTriggered:trap_nsaid",
+      "event": "⛔ ACUTE ON CHRONIC KI: NSAIDs have further reduced renal perfusion. Creatinine now 620 μmol/L — rising. Patient has decreased urine output. Urgent nephrology review required.",
+      "penaltyPoints": 30,
+      "recoverable": false,
+      "teachingPoint": "NSAIDs inhibit prostaglandin-mediated afferent arteriolar dilation. In CKD, the kidney depends on this mechanism to maintain GFR. NSAIDs = acute-on-chronic kidney injury."
+    },
+    {
+      "id": "complication_lactic_acidosis",
+      "trigger": "lactic_acidosis_risk",
+      "triggerCondition": "trapTriggered:trap_metformin AND eGFR < 30",
+      "event": "⚠️ LACTIC ACIDOSIS RISK: Metformin continued in eGFR 11. Lactate rising. Patient developing nausea, abdominal pain, Kussmaul breathing.",
+      "penaltyPoints": 20,
+      "recoverable": true,
+      "recoveryActions": ["stop metformin", "IV bicarbonate", "urgent dialysis"],
+      "teachingPoint": "Metformin is cleared renally. In eGFR <30, it accumulates, inhibiting mitochondrial complex I → lactic acidosis. Must be stopped."
+    }
+  ],
+
+  "managementChecklist": {
+    "_comment": "Optional: learner can propose management. Engine scores against this checklist.",
+    "immediate": [
+      { "id": "mgmt_ecg", "action": "ECG for hyperkalaemia", "points": 15, "critical": true },
+      { "id": "mgmt_calcium_gluconate", "action": "IV calcium gluconate 10ml 10% (cardioprotection)", "points": 15, "critical": true },
+      { "id": "mgmt_insulin_dextrose", "action": "IV insulin-dextrose (K shift)", "points": 12 },
+      { "id": "mgmt_stop_nsaid", "action": "Stop ibuprofen", "points": 10 },
+      { "id": "mgmt_stop_metformin", "action": "Stop metformin", "points": 10 }
+    ],
+    "shortTerm": [
+      { "id": "mgmt_fluid_balance", "action": "Strict fluid balance / daily weights", "points": 8 },
+      { "id": "mgmt_bp_control", "action": "Optimise antihypertensives (target BP <130/80 in CKD)", "points": 8 },
+      { "id": "mgmt_diet", "action": "Low protein, low potassium, low phosphate diet + renal dietitian referral", "points": 6 },
+      { "id": "mgmt_epo", "action": "Consider EPO therapy for anaemia (Hb 8.2)", "points": 6 },
+      { "id": "mgmt_dialysis_plan", "action": "Urgent nephrology referral for dialysis planning (eGFR 11)", "points": 10, "critical": true }
+    ],
+    "longTerm": [
+      { "id": "mgmt_transplant", "action": "Discuss renal transplant eligibility", "points": 5 },
+      { "id": "mgmt_ckd_mbd", "action": "Treat CKD-MBD: phosphate binders, vitamin D supplementation, PTH monitoring", "points": 5 },
+      { "id": "mgmt_dm_control", "action": "Optimise glycaemic control with renally-safe agents (linagliptin / insulin)", "points": 8 }
+    ]
+  },
+
+  "teachingPoints": [
+    "CKD causes anaemia via reduced EPO production — not iron deficiency. Normocytic pattern is key.",
+    "Bilateral small echogenic kidneys on USS = chronicity confirmed — distinguishes CKD from AKI.",
+    "Hyperkalaemia in CKD (K⁺ >6.0) is a medical emergency: ECG, calcium gluconate, insulin-dextrose.",
+    "NSAIDs are absolutely contraindicated in CKD — prostaglandin inhibition reduces GFR further.",
+    "Metformin must be stopped when eGFR <30 due to lactic acidosis risk.",
+    "ACE inhibitors (Lisinopril) are reno-protective in diabetic nephropathy — continue but monitor K⁺.",
+    "Diabetic nephropathy + hypertension for >10 years → most likely aetiology in this case.",
+    "eGFR 11 = CKD Stage 5 (ESRD territory) — urgent dialysis planning required.",
+    "Metabolic acidosis in CKD: bicarbonate supplementation may slow disease progression."
+  ]
+}

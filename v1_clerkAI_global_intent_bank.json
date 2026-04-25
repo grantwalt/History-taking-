@@ -1,0 +1,935 @@
+{
+  "_meta": {
+    "schema": "clerkAI-intentBank-v2.0",
+    "version": "2.0",
+    "totalIntents": 58,
+    "description": "Global reusable intent bank for ClerkAI. All intents are case-agnostic and matched before case-specific resolution.",
+    "categories": ["history", "exam", "investigation", "management", "system"]
+  },
+
+  "intentBank": {
+
+    "hpc_onset": {
+      "id": "hpc_onset",
+      "category": "history",
+      "label": "Onset & Duration",
+      "aliases": [
+        "when did it start", "how long has it been", "how long have you had this",
+        "when did this begin", "duration of symptoms", "how long ago did this start",
+        "when did the problem start", "onset of symptoms", "for how long",
+        "since when", "how many days", "how many weeks", "how many months",
+        "when did you first notice", "when did you first feel this",
+        "did it come on suddenly", "gradual or sudden onset", "acute or chronic",
+        "is it getting worse over time", "how long has the swelling been there",
+        "how long have you been tired", "when did the nausea start",
+        "has it been going on long", "is this a new problem",
+        "first episode or recurring", "when did symptoms begin"
+      ],
+      "patterns": [
+        "when.*start", "how long", "duration", "onset", "since when", "begin",
+        "how.*days", "how.*weeks", "how.*months", "first.*notice", "first.*feel",
+        "sudden|gradual", "acute|chronic", "getting worse"
+      ]
+    },
+
+    "hpc_character": {
+      "id": "hpc_character",
+      "category": "history",
+      "label": "Character of Symptoms",
+      "aliases": [
+        "describe the pain", "what does it feel like", "describe the symptom",
+        "what is the character of", "how would you describe it",
+        "is it sharp or dull", "is it constant or intermittent", "burning or stabbing",
+        "what kind of pain is it", "describe the fatigue", "how bad is the tiredness",
+        "severity of symptoms", "mild moderate or severe", "on a scale of 1 to 10",
+        "how severe is it", "how intense is it", "rate the pain",
+        "is it getting worse", "is it the same all the time", "does it come and go",
+        "colicky or constant", "describe the nausea", "describe the swelling"
+      ],
+      "patterns": [
+        "describe.*pain", "describe.*symptom", "what.*feel like", "character",
+        "sharp|dull|burning|stabbing|aching|throbbing|colicky|crushing",
+        "constant|intermittent|comes and goes", "severity|severe|mild|moderate",
+        "scale of|rate.*pain|score.*pain", "how bad", "how intense"
+      ]
+    },
+
+    "hpc_radiation": {
+      "id": "hpc_radiation",
+      "category": "history",
+      "label": "Radiation of Pain",
+      "aliases": [
+        "does it spread anywhere", "does the pain radiate", "does it go anywhere",
+        "does it travel", "where does it go", "radiation of pain",
+        "does it move", "any pain elsewhere", "pain going to the shoulder",
+        "pain going to the back", "pain going to the arm", "pain going to the groin",
+        "does the pain shoot anywhere", "any referred pain"
+      ],
+      "patterns": [
+        "spread|radiat|travel|go.*anywhere|shoot.*down|referred",
+        "pain.*arm|pain.*back|pain.*shoulder|pain.*groin|pain.*jaw"
+      ]
+    },
+
+    "hpc_aggravating": {
+      "id": "hpc_aggravating",
+      "category": "history",
+      "label": "Aggravating Factors",
+      "aliases": [
+        "what makes it worse", "what aggravates it", "what triggers it",
+        "does anything make it worse", "what brings it on", "any triggers",
+        "does eating make it worse", "does movement make it worse",
+        "does lying down make it worse", "does exercise worsen it",
+        "what worsens the symptoms", "aggravating factors",
+        "anything that makes it worse", "does stress trigger it",
+        "does cold air trigger it", "does food worsen it"
+      ],
+      "patterns": [
+        "makes.*worse|worsen|aggravat|trigger|bring.*on",
+        "lying down|exertion|exercise|eating|moving|stress|cold|hot"
+      ]
+    },
+
+    "hpc_relieving": {
+      "id": "hpc_relieving",
+      "category": "history",
+      "label": "Relieving Factors",
+      "aliases": [
+        "what makes it better", "what relieves it", "anything that helps",
+        "does anything ease it", "what gives you relief", "relieving factors",
+        "does rest help", "does medication help", "does lying still help",
+        "does leaning forward help", "do painkillers help",
+        "does eating relieve it", "does antacid help", "anything to feel better"
+      ],
+      "patterns": [
+        "makes.*better|reliev|ease|help|comfort",
+        "rest|lying|antacid|painkiller|sitting|leaning|eating"
+      ]
+    },
+
+    "sr_urinary": {
+      "id": "sr_urinary",
+      "category": "history",
+      "label": "Urinary Symptoms",
+      "aliases": [
+        "any urinary symptoms", "how is your urine", "problems with urination",
+        "is there blood in your urine", "haematuria", "foamy urine", "bubbly urine",
+        "is your urine dark", "frequency of urination", "how often do you urinate",
+        "burning when you pass urine", "dysuria", "pain when urinating",
+        "difficulty passing urine", "is your urine output reduced", "passing less urine",
+        "oliguria", "any change in urine", "urine colour", "frothy urine",
+        "urgency when urinating", "nocturia", "waking up to urinate at night",
+        "any problems with urine", "urine stream problems", "hesitancy"
+      ],
+      "patterns": [
+        "urin|pee|micturit", "haematuria|blood.*urine|urine.*blood",
+        "foamy|bubbly|frothy", "dark.*urine|urine.*dark",
+        "burning|dysuria|pain.*pass", "frequency|frequent|how often",
+        "oliguria|less.*urine|reduced.*urine", "nocturia|night.*urine",
+        "urgency|difficulty|hesitancy"
+      ]
+    },
+
+    "sr_appetite": {
+      "id": "sr_appetite",
+      "category": "history",
+      "label": "Appetite & Weight",
+      "aliases": [
+        "how is your appetite", "are you eating well", "loss of appetite",
+        "have you lost weight", "weight loss", "are you losing weight",
+        "have you gained weight", "weight gain", "any change in weight",
+        "are you eating normally", "anorexia", "nausea after eating",
+        "vomiting", "do you feel sick after eating", "are you able to eat",
+        "food intake", "how much are you eating", "what are you eating",
+        "nutritional status", "dietary history", "caloric intake"
+      ],
+      "patterns": [
+        "appetite|eating|food intake|diet", "weight.*loss|losing weight|lost.*kg",
+        "weight.*gain|gaining weight", "anorexia|nausea|vomit",
+        "sick after eating|protein intolerance"
+      ]
+    },
+
+    "sr_bowel": {
+      "id": "sr_bowel",
+      "category": "history",
+      "label": "Bowel Habit",
+      "aliases": [
+        "any change in bowel habit", "how are your stools", "bowel movements",
+        "are you constipated", "constipation", "are you having diarrhoea", "diarrhoea",
+        "blood in stool", "rectal bleeding", "mucus in stool", "dark or tarry stools",
+        "melena", "pale stools", "steatorrhoea", "oily stools",
+        "how often do you open your bowels", "any straining", "normal bowels"
+      ],
+      "patterns": [
+        "bowel|stool|faeces|defecation|constipat|diarrhoea|diarrhea",
+        "blood.*stool|rectal.*bleed|melena|tarry.*stool",
+        "pale.*stool|mucus.*stool|oily.*stool"
+      ]
+    },
+
+    "sr_cardiovascular": {
+      "id": "sr_cardiovascular",
+      "category": "history",
+      "label": "Cardiovascular Symptoms",
+      "aliases": [
+        "chest pain", "any chest tightness", "palpitations", "heart racing",
+        "heart pounding", "irregular heartbeat", "shortness of breath",
+        "breathlessness on exertion", "dyspnoea", "do you get breathless",
+        "breathless lying flat", "orthopnoea", "paroxysmal nocturnal dyspnoea",
+        "waking up breathless at night", "ankle swelling", "leg swelling",
+        "oedema", "swollen legs", "any swelling", "do you get breathless on stairs",
+        "exercise tolerance", "how far can you walk", "claudication",
+        "syncopal episodes", "fainting", "dizziness"
+      ],
+      "patterns": [
+        "chest pain|chest.*tight|chest.*pressure|angina",
+        "palpitat|heart.*rac|irregular.*beat|arrhythmia",
+        "breathless|dyspnoea|short.*breath|sob",
+        "orthopnoea|pnd|lying flat",
+        "ankle.*swell|leg.*swell|oedema", "faint|syncope|dizzy|collapse",
+        "exercise.*toler|how far.*walk|claudication"
+      ]
+    },
+
+    "sr_respiratory": {
+      "id": "sr_respiratory",
+      "category": "history",
+      "label": "Respiratory Symptoms",
+      "aliases": [
+        "any cough", "how long have you had a cough", "productive cough",
+        "dry cough", "coughing up blood", "haemoptysis", "sputum production",
+        "colour of sputum", "wheeze", "do you wheeze", "noisy breathing",
+        "stridor", "shortness of breath at rest", "breathlessness",
+        "chest tightness", "pleuritic chest pain", "pain on breathing"
+      ],
+      "patterns": [
+        "cough|sputum|expectoration|phlegm",
+        "haemoptysis|blood.*cough|cough.*blood",
+        "wheeze|stridor|noisy.*breath",
+        "pleuritic|pain.*breath|breathing.*pain"
+      ]
+    },
+
+    "sr_neurology": {
+      "id": "sr_neurology",
+      "category": "history",
+      "label": "Neurological Symptoms",
+      "aliases": [
+        "headache", "any headaches", "how bad are the headaches", "migraine",
+        "dizziness", "vertigo", "feeling dizzy", "do you get confused",
+        "any confusion", "memory problems", "forgetfulness", "fits",
+        "seizures", "blackouts", "loss of consciousness", "any weakness",
+        "arm weakness", "leg weakness", "facial droop", "slurred speech",
+        "tingling", "numbness", "pins and needles", "any sensory changes",
+        "visual disturbance", "blurred vision", "diplopia", "double vision",
+        "restless legs", "crawling sensation in legs", "difficulty concentrating"
+      ],
+      "patterns": [
+        "headache|migraine|head.*pain",
+        "dizzy|vertigo|spinning|lightheaded",
+        "confusion|confus|disoriented|cognition|memory",
+        "seizure|fit|convulsion|blackout|loss.*consciousness",
+        "weakness|paralysis|droop|slurred",
+        "numb|tingle|pins.*needle|sensory",
+        "visual|blurr|double.*vision|diplopia",
+        "restless.*leg|crawling.*leg"
+      ]
+    },
+
+    "sr_skin": {
+      "id": "sr_skin",
+      "category": "history",
+      "label": "Skin Symptoms",
+      "aliases": [
+        "any itching", "do you itch", "pruritus", "skin rash", "any rash",
+        "yellowing of skin", "jaundice", "yellow eyes", "skin colour change",
+        "dry skin", "skin changes", "bruising easily", "easy bruising",
+        "hair loss", "nail changes", "any skin problems",
+        "urticaria", "hives", "scratch marks on skin"
+      ],
+      "patterns": [
+        "itch|pruritus|scratch",
+        "rash|urticaria|hives|skin.*change",
+        "jaundice|yellow.*skin|yellow.*eyes|icterus",
+        "dry.*skin|bruising|hair.*loss|nail.*change"
+      ]
+    },
+
+    "sr_musculoskeletal": {
+      "id": "sr_musculoskeletal",
+      "category": "history",
+      "label": "Musculoskeletal Symptoms",
+      "aliases": [
+        "joint pain", "arthralgia", "arthritis", "swollen joints",
+        "back pain", "bone pain", "muscle pain", "myalgia",
+        "muscle weakness", "any joint problems", "morning stiffness",
+        "stiffness in joints", "difficulty walking", "mobility problems",
+        "fractures", "broken bones"
+      ],
+      "patterns": [
+        "joint.*pain|arthral|arthritis|swollen.*joint",
+        "back.*pain|bone.*pain|muscle.*pain|myalgia",
+        "stiffness|morning.*stiff|fracture|broken.*bone"
+      ]
+    },
+
+    "sr_fever": {
+      "id": "sr_fever",
+      "category": "history",
+      "label": "Fever & Constitutional",
+      "aliases": [
+        "do you have a fever", "have you had a temperature", "feeling feverish",
+        "night sweats", "chills", "rigors", "feeling hot", "pyrexia",
+        "do you sweat at night", "feeling cold and shivery", "shaking",
+        "malaise", "feeling generally unwell", "fatigue", "tiredness",
+        "how is your energy", "energy levels", "any weight loss",
+        "lethargy", "feeling run down"
+      ],
+      "patterns": [
+        "fever|febrile|temperature|pyrexia|feverish",
+        "night.*sweat|sweat.*night|chills|rigors|shiver",
+        "malaise|lethargy|fatigue|tired|energy|run.*down"
+      ]
+    },
+
+    "sr_oedema": {
+      "id": "sr_oedema",
+      "category": "history",
+      "label": "Oedema",
+      "aliases": [
+        "any swelling", "swollen legs", "swollen ankles", "leg swelling",
+        "facial swelling", "puffiness around eyes", "periorbital oedema",
+        "swollen face", "generalised swelling", "anasarca", "ascites",
+        "swollen abdomen", "abdominal distension", "bloating",
+        "do your shoes feel tight", "rings feel tight", "any puffiness"
+      ],
+      "patterns": [
+        "swell|oedema|edema|puffy|bloat",
+        "ankle.*swell|leg.*swell|facial.*swell",
+        "periorbital|around.*eyes|eye.*puff",
+        "ascites|abdominal.*distension|shoes.*tight|rings.*tight"
+      ]
+    },
+
+    "pmh_general": {
+      "id": "pmh_general",
+      "category": "history",
+      "label": "Past Medical History",
+      "aliases": [
+        "any medical conditions", "past medical history", "previous illnesses",
+        "do you have any medical problems", "medical background",
+        "any previous diagnoses", "any chronic conditions", "long term conditions",
+        "do you have diabetes", "do you have hypertension", "do you have high blood pressure",
+        "history of heart disease", "history of kidney disease", "previous kidney problems",
+        "any previous hospital admissions", "any serious illnesses in the past",
+        "any major medical history", "do you have any diseases"
+      ],
+      "patterns": [
+        "past.*medical|medical.*histor|pmh",
+        "previous.*illness|chronic.*condition|long.*term",
+        "diabetes|hypertension|high.*blood.*pressure|hbp",
+        "heart.*disease|kidney.*disease|liver.*disease",
+        "hospital.*admission|admitted.*before|illnesses.*past"
+      ]
+    },
+
+    "pmh_surgical": {
+      "id": "pmh_surgical",
+      "category": "history",
+      "label": "Surgical History",
+      "aliases": [
+        "any previous operations", "surgical history", "any surgeries",
+        "have you had any operations", "operations in the past",
+        "any procedures", "any anaesthesia before", "any complications from surgery",
+        "caesarean section", "appendectomy", "cholecystectomy",
+        "any scars", "previous surgery"
+      ],
+      "patterns": [
+        "operat|surg|procedure|anaesthes|anesthes",
+        "caesar|appendectomy|cholecyst|gastrectomy",
+        "previous.*surg|surg.*histor"
+      ]
+    },
+
+    "pmh_family": {
+      "id": "pmh_family",
+      "category": "history",
+      "label": "Family History",
+      "aliases": [
+        "family history", "any illness in the family", "do any relatives have this",
+        "does it run in the family", "parents health", "mother's health",
+        "father's health", "siblings health", "any hereditary conditions",
+        "genetic conditions in family", "family members with similar problems",
+        "kidney disease in family", "heart disease in family", "diabetes in family",
+        "cancer in family", "what did your parents die from"
+      ],
+      "patterns": [
+        "family.*histor|histor.*family|fh",
+        "run.*family|hereditary|genetic|relatives",
+        "mother|father|parents|siblings|brother|sister",
+        "die.*from|cause.*death.*family"
+      ]
+    },
+
+    "meds_general": {
+      "id": "meds_general",
+      "category": "history",
+      "label": "Medications",
+      "aliases": [
+        "what medications are you on", "current medications", "any regular medications",
+        "drugs history", "drug history", "any tablets", "any injections",
+        "what medicines are you taking", "are you on any treatment",
+        "any herbal medicines", "traditional medicine", "any supplements",
+        "over the counter medications", "painkillers", "any self medication",
+        "what prescription medicines", "long term medications",
+        "any new medications recently", "medications from the pharmacy"
+      ],
+      "patterns": [
+        "medicat|medication|drug.*histor|drugs",
+        "tablet|capsule|injection|treatment",
+        "herbal|traditional.*medicine|supplement",
+        "painkiller|otc|over.*counter|self.*medic",
+        "prescription|pharmacy|chemist"
+      ]
+    },
+
+    "allergies": {
+      "id": "allergies",
+      "category": "history",
+      "label": "Allergies",
+      "aliases": [
+        "any allergies", "drug allergies", "allergic to anything",
+        "any adverse drug reactions", "any reactions to medications",
+        "penicillin allergy", "sulfa allergy", "any known allergies",
+        "have you had a bad reaction to any drug", "anaphylaxis",
+        "any food allergies"
+      ],
+      "patterns": [
+        "allerg|adverse.*drug|drug.*reaction",
+        "anaphylaxis|reaction.*medic|bad.*reaction",
+        "penicillin|sulfa|amoxicillin"
+      ]
+    },
+
+    "social_history": {
+      "id": "social_history",
+      "category": "history",
+      "label": "Social History",
+      "aliases": [
+        "occupation", "what do you do for work", "job", "employment",
+        "do you smoke", "smoking history", "cigarettes",
+        "do you drink alcohol", "alcohol intake", "how much alcohol",
+        "do you use recreational drugs", "illicit drugs", "substance use",
+        "living situation", "who do you live with", "marital status",
+        "any stress", "stress at home", "stress at work",
+        "travel history", "any recent travel", "where have you travelled",
+        "what is your diet like", "eating habits", "exercise"
+      ],
+      "patterns": [
+        "occup|job|work|employment",
+        "smok|cigarette|tobacco|nicotine",
+        "alcohol|drink|etoh|beer|wine|spirits",
+        "illicit|recreat.*drug|substance|marijuana|cannabis",
+        "living.*situation|who.*live|marital|married|single",
+        "stress|travel|diet|exercise"
+      ]
+    },
+
+    "exam_general": {
+      "id": "exam_general",
+      "category": "exam",
+      "label": "General Examination",
+      "aliases": [
+        "general examination", "general appearance", "how does the patient look",
+        "vitals", "vital signs", "blood pressure", "check the bp",
+        "heart rate", "pulse", "temperature", "respiratory rate", "oxygen saturation",
+        "observe the patient", "look at the patient", "general inspection",
+        "is the patient pale", "pallor", "jaundice", "cyanosis",
+        "oedema on inspection", "general wellbeing", "nutritional status"
+      ],
+      "patterns": [
+        "general.*exam|general.*appear|general.*inspect",
+        "vital|bp|blood.*pressure|pulse|heart.*rate|temperature|spo2|o2.*sat",
+        "pale|pallor|jaundice|cyan|uraemic|oedema",
+        "how.*look|appear.*ill|look.*sick"
+      ]
+    },
+
+    "exam_cardiovascular": {
+      "id": "exam_cardiovascular",
+      "category": "exam",
+      "label": "Cardiovascular Examination",
+      "aliases": [
+        "cardiovascular examination", "heart examination", "examine the heart",
+        "check the pulse", "listen to the heart", "auscultate heart sounds",
+        "any murmurs", "heart sounds", "s1 s2", "gallop rhythm",
+        "check jvp", "jugular venous pressure", "apex beat",
+        "pericardial rub", "cardiac examination", "cvs examination",
+        "feel the pulse", "peripheral pulses", "capillary refill time"
+      ],
+      "patterns": [
+        "cardiovascular|cardiac|heart.*exam|cvs",
+        "auscult.*heart|listen.*heart|heart.*sounds|murmur",
+        "jvp|jugular.*venous|apex.*beat|displaced.*apex",
+        "gallop|s3|s4|pericardial.*rub",
+        "peripheral.*pulse|capillary.*refill|crt"
+      ]
+    },
+
+    "exam_respiratory": {
+      "id": "exam_respiratory",
+      "category": "exam",
+      "label": "Respiratory Examination",
+      "aliases": [
+        "respiratory examination", "lung examination", "examine the chest",
+        "listen to the chest", "auscultate the lungs", "any crackles",
+        "any wheeze on auscultation", "breath sounds", "air entry",
+        "percussion of chest", "dull to percussion", "resonant",
+        "respiratory exam", "chest examination", "check breathing"
+      ],
+      "patterns": [
+        "respirat|lung.*exam|chest.*exam",
+        "auscult.*lung|auscult.*chest|listen.*chest|listen.*lung",
+        "crackle|crepitation|wheeze|bronchial.*breath",
+        "percuss|dull|resonant|stony.*dull",
+        "air.*entry|breath.*sound"
+      ]
+    },
+
+    "exam_abdomen": {
+      "id": "exam_abdomen",
+      "category": "exam",
+      "label": "Abdominal Examination",
+      "aliases": [
+        "abdominal examination", "examine the abdomen", "feel the abdomen",
+        "palpate the abdomen", "any tenderness", "guarding", "rebound tenderness",
+        "liver palpation", "spleen palpation", "kidney palpation",
+        "feel for organomegaly", "any masses", "ascites", "shifting dullness",
+        "bowel sounds", "renal bruit", "auscultate abdomen",
+        "murphy's sign", "rovsing's sign", "mcburney's point"
+      ],
+      "patterns": [
+        "abdom.*exam|exam.*abdom|palpat.*abdom",
+        "tender|guarding|rebound|peritonism",
+        "liver|spleen|kidney.*palp|organomegaly|mass",
+        "ascites|shifting.*dullness|fluid.*thrill",
+        "bowel.*sound|renal.*bruit",
+        "murphy|rovsing|mcburney|lanz"
+      ]
+    },
+
+    "exam_neuro": {
+      "id": "exam_neuro",
+      "category": "exam",
+      "label": "Neurological Examination",
+      "aliases": [
+        "neurological examination", "neuro exam", "check gcs",
+        "glasgow coma scale", "orientation", "is the patient oriented",
+        "check consciousness", "level of consciousness", "confusion assessment",
+        "asterixis", "metabolic flap", "check reflexes", "deep tendon reflexes",
+        "plantar reflexes", "power in limbs", "sensation", "coordination",
+        "cerebellar examination", "cranial nerves"
+      ],
+      "patterns": [
+        "neuro.*exam|neurolog.*exam|neuro.*assess",
+        "gcs|glasgow|consciousness|orientation|confused",
+        "asterixis|metabolic.*flap|flapping.*tremor",
+        "reflex|plantar|power|sensation|coordination",
+        "cranial.*nerve|cerebellar"
+      ]
+    },
+
+    "ix_fbc": {
+      "id": "ix_fbc",
+      "category": "investigation",
+      "label": "Full Blood Count",
+      "aliases": [
+        "full blood count", "fbc", "complete blood count", "cbc",
+        "check haemoglobin", "check hb", "anaemia screen", "blood count",
+        "is the patient anaemic", "check white cell count", "wbc",
+        "platelet count", "differential blood count", "check haematocrit"
+      ],
+      "patterns": [
+        "fbc|full.*blood.*count|complete.*blood.*count|cbc",
+        "haemoglobin|hemoglobin|hb|anaemia|anemia",
+        "white.*cell|wbc|leucocyte|leukocyte",
+        "platelet|platelet.*count|haematocrit"
+      ]
+    },
+
+    "ix_lft": {
+      "id": "ix_lft",
+      "category": "investigation",
+      "label": "Renal Function / U&E",
+      "aliases": [
+        "renal function", "kidney function tests", "u and e", "urea and electrolytes",
+        "check creatinine", "electrolytes", "check potassium", "check sodium",
+        "check egfr", "glomerular filtration rate", "renal profile",
+        "metabolic panel", "check urea", "urea level",
+        "bicarbonate level", "check acid base", "check bicarb",
+        "metabolic acidosis screen", "check phosphate", "check calcium",
+        "check uric acid"
+      ],
+      "patterns": [
+        "renal.*function|kidney.*function|u.*e|urea.*electrolyte",
+        "creatinine|egfr|glomerular.*filtration",
+        "potassium|sodium|chloride|electrolyte",
+        "urea|blood.*urea.*nitrogen|bun",
+        "bicarbonate|bicarb|acid.*base",
+        "phosphate|calcium|uric.*acid"
+      ]
+    },
+
+    "ix_lft_liver": {
+      "id": "ix_lft_liver",
+      "category": "investigation",
+      "label": "Liver Function Tests",
+      "aliases": [
+        "liver function tests", "lft", "liver enzymes", "check bilirubin",
+        "alt", "ast", "alp", "ggt", "albumin level", "check liver",
+        "hepatic profile", "check alkaline phosphatase"
+      ],
+      "patterns": [
+        "liver.*function|lft|hepatic.*profile",
+        "bilirubin|alt|ast|alp|ggt|albumin",
+        "liver.*enzyme|hepatic.*enzyme"
+      ]
+    },
+
+    "ix_urinalysis": {
+      "id": "ix_urinalysis",
+      "category": "investigation",
+      "label": "Urinalysis / Dipstick",
+      "aliases": [
+        "urine dipstick", "urinalysis", "check urine", "urine test",
+        "protein in urine", "blood in urine", "urine protein",
+        "acr", "albumin to creatinine ratio", "pcr", "protein to creatinine ratio",
+        "urine microscopy", "mid-stream urine", "msu",
+        "spot urine", "check urine protein", "urinary protein"
+      ],
+      "patterns": [
+        "urin.*dipstick|dipstick.*urin|urinalysis|urin.*test",
+        "acr|albumin.*creatinine|protein.*creatinine|pcr",
+        "urin.*microscop|msu|mid.*stream",
+        "protein.*urine|urine.*protein|blood.*urine"
+      ]
+    },
+
+    "ix_urine_mc_s": {
+      "id": "ix_urine_mc_s",
+      "category": "investigation",
+      "label": "Urine M/C/S",
+      "aliases": [
+        "urine culture", "urine mcs", "urine mc and s", "send urine for culture",
+        "culture and sensitivity urine", "midstream urine for culture",
+        "check for uti", "urine for bacteria", "urine sensitivity"
+      ],
+      "patterns": [
+        "urine.*cultur|cultur.*urine|mcs|mc.*s",
+        "sensitivity.*urine|urine.*sensit",
+        "uti|bacteria.*urine|infect.*urine"
+      ]
+    },
+
+    "ix_ultrasound": {
+      "id": "ix_ultrasound",
+      "category": "investigation",
+      "label": "Renal Ultrasound",
+      "aliases": [
+        "renal ultrasound", "kidney ultrasound", "renal uss", "ultrasound kidneys",
+        "imaging kidneys", "kidney size", "check kidney size",
+        "abdominal ultrasound", "renal imaging", "check for hydronephrosis",
+        "kidney scan", "uss abdomen", "ultrasound abdomen"
+      ],
+      "patterns": [
+        "renal.*ultrasound|ultrasound.*renal|renal.*uss|uss.*renal",
+        "kidney.*ultrasound|ultrasound.*kidney|kidney.*scan|kidney.*imaging",
+        "abdom.*ultrasound|ultrasound.*abdom|uss.*abdom",
+        "hydronephrosis|kidney.*size|obstruction.*renal"
+      ]
+    },
+
+    "ix_ecg": {
+      "id": "ix_ecg",
+      "category": "investigation",
+      "label": "ECG / Electrocardiogram",
+      "aliases": [
+        "ecg", "electrocardiogram", "ekg", "heart tracing", "cardiac monitor",
+        "check ecg", "do an ecg", "check heart rhythm", "check for arrhythmia",
+        "telemetry", "rhythm strip", "12 lead ecg",
+        "check for hyperkalaemia on ecg", "peaked t waves"
+      ],
+      "patterns": [
+        "ecg|electrocardiogram|ekg|cardiac.*monitor",
+        "heart.*rhythm|arrhythmia|rhythm.*strip|telemetry",
+        "peaked.*t|t.*wave|qrs.*widen"
+      ]
+    },
+
+    "ix_rbs": {
+      "id": "ix_rbs",
+      "category": "investigation",
+      "label": "Blood Glucose / HbA1c",
+      "aliases": [
+        "blood glucose", "blood sugar", "rbs", "random blood sugar",
+        "fasting blood sugar", "fbs", "hba1c", "glycated haemoglobin",
+        "check diabetes control", "glucose level", "capillary blood glucose",
+        "cbg", "glucose monitoring", "finger prick test"
+      ],
+      "patterns": [
+        "blood.*glucose|blood.*sugar|glucose.*level",
+        "rbs|fbs|fasting.*sugar|random.*sugar",
+        "hba1c|glycated|haemoglobin.*a1c",
+        "diabetes.*control|cbg|finger.*prick"
+      ]
+    },
+
+    "ix_malaria": {
+      "id": "ix_malaria",
+      "category": "investigation",
+      "label": "Malaria Screen",
+      "aliases": [
+        "malaria test", "malaria rdt", "rapid diagnostic test malaria",
+        "malaria blood film", "thick and thin film", "check for malaria",
+        "parasitaemia", "malaria antigen test", "hrp2", "pldh"
+      ],
+      "patterns": [
+        "malaria.*test|malaria.*rdt|rdt.*malaria",
+        "blood.*film|thick.*film|thin.*film",
+        "parasitaemia|malaria.*screen|hrp2|pldh"
+      ]
+    },
+
+    "ix_cxr": {
+      "id": "ix_cxr",
+      "category": "investigation",
+      "label": "Chest X-Ray",
+      "aliases": [
+        "chest x-ray", "cxr", "chest radiograph", "x-ray chest",
+        "check for pulmonary oedema", "check lungs on x-ray",
+        "chest imaging", "look at the lungs", "cardiomegaly on cxr"
+      ],
+      "patterns": [
+        "chest.*x.?ray|cxr|chest.*radiograph",
+        "pulmonary.*oedema.*xray|cardiomegaly.*xray",
+        "lung.*imaging|chest.*imaging"
+      ]
+    },
+
+    "ix_abg": {
+      "id": "ix_abg",
+      "category": "investigation",
+      "label": "Arterial Blood Gas",
+      "aliases": [
+        "arterial blood gas", "abg", "blood gas", "check pco2",
+        "check ph", "check oxygen levels", "ventilatory status",
+        "acid base balance", "check lactate", "metabolic acidosis",
+        "respiratory failure"
+      ],
+      "patterns": [
+        "arterial.*blood.*gas|abg|blood.*gas",
+        "pco2|po2|ph.*blood|acid.*base",
+        "lactate|metabolic.*acidosis|resp.*failure"
+      ]
+    },
+
+    "ix_pefr": {
+      "id": "ix_pefr",
+      "category": "investigation",
+      "label": "Peak Flow / PEFR",
+      "aliases": [
+        "peak flow", "pefr", "peak expiratory flow rate", "peak flow meter",
+        "peak flow reading", "check peak flow", "do a peak flow"
+      ],
+      "patterns": [
+        "peak.*flow|pefr|peak.*expiratory"
+      ]
+    },
+
+    "ix_bone_profile": {
+      "id": "ix_bone_profile",
+      "category": "investigation",
+      "label": "Bone Profile / PTH",
+      "aliases": [
+        "bone profile", "calcium level", "phosphate level", "pth",
+        "parathyroid hormone", "vitamin d level", "alkaline phosphatase",
+        "check calcium", "check phosphate", "ckd mineral bone disorder",
+        "ckd mbd", "renal osteodystrophy"
+      ],
+      "patterns": [
+        "bone.*profile|calcium|phosphate|pth|parathyroid",
+        "vitamin.*d|ckd.*mbd|renal.*osteodystrophy"
+      ]
+    },
+
+    "mgmt_analgesia": {
+      "id": "mgmt_analgesia",
+      "category": "management",
+      "label": "Analgesia",
+      "aliases": [
+        "give paracetamol", "analgesia", "pain relief", "prescribe painkiller",
+        "give ibuprofen", "give diclofenac", "nsaid for pain", "pain management",
+        "prescribe morphine", "prescribe tramadol", "opioid analgesia",
+        "multimodal analgesia"
+      ],
+      "patterns": [
+        "paracetamol|acetaminophen|analges|pain.*relief",
+        "ibuprofen|diclofenac|naproxen|nsaid",
+        "morphine|tramadol|opioid|codeine|pethidine"
+      ]
+    },
+
+    "mgmt_antibiotic": {
+      "id": "mgmt_antibiotic",
+      "category": "management",
+      "label": "Antibiotics",
+      "aliases": [
+        "give antibiotics", "prescribe antibiotics", "antibiotic therapy",
+        "start amoxicillin", "start ceftriaxone", "start metronidazole",
+        "start gentamicin", "broad spectrum antibiotics", "empirical antibiotics",
+        "narrow spectrum", "culture directed antibiotics", "iv antibiotics"
+      ],
+      "patterns": [
+        "antibiotic|antimicrobial|antibact",
+        "amoxicillin|ampicillin|ceftriaxone|cefazolin|metronidazole",
+        "gentamicin|ciprofloxacin|piperacillin|meropenem|vancomycin"
+      ]
+    },
+
+    "mgmt_diuretic": {
+      "id": "mgmt_diuretic",
+      "category": "management",
+      "label": "Diuretics",
+      "aliases": [
+        "give furosemide", "give frusemide", "diuretic therapy",
+        "give lasix", "loop diuretic", "reduce fluid overload",
+        "fluid removal", "spironolactone", "aldosterone antagonist",
+        "thiazide", "hydrochlorothiazide"
+      ],
+      "patterns": [
+        "furosemide|frusemide|lasix|diuretic",
+        "spironolactone|aldosterone.*antag|thiazide|hydrochlorothiazide",
+        "loop.*diuretic|fluid.*remov|reduce.*fluid"
+      ]
+    },
+
+    "mgmt_antihypertensive": {
+      "id": "mgmt_antihypertensive",
+      "category": "management",
+      "label": "Antihypertensives",
+      "aliases": [
+        "antihypertensive", "blood pressure medication", "treat high bp",
+        "lisinopril", "amlodipine", "labetalol", "nifedipine", "ramipril",
+        "calcium channel blocker", "ace inhibitor", "beta blocker", "arb",
+        "reduce blood pressure", "lower bp", "blood pressure control"
+      ],
+      "patterns": [
+        "antihypertens|blood.*pressure.*medic|treat.*hypertens",
+        "lisinopril|ramipril|enalapril|ace.*inhibitor|acei",
+        "amlodipine|nifedipine|calcium.*channel",
+        "labetalol|atenolol|bisoprolol|beta.*block",
+        "losartan|valsartan|arb"
+      ]
+    },
+
+    "mgmt_dialysis": {
+      "id": "mgmt_dialysis",
+      "category": "management",
+      "label": "Renal Replacement Therapy",
+      "aliases": [
+        "dialysis", "haemodialysis", "hemodialysis", "peritoneal dialysis",
+        "renal replacement therapy", "rrt", "refer for dialysis",
+        "urgent dialysis", "nephrology referral", "transplant referral",
+        "kidney transplant", "prepare for dialysis"
+      ],
+      "patterns": [
+        "dialysis|haemodialysis|hemodialysis|peritoneal.*dialysis",
+        "renal.*replacement|rrt",
+        "nephrology.*referral|transplant|prepare.*dialysis"
+      ]
+    },
+
+    "mgmt_hyperkalaemia": {
+      "id": "mgmt_hyperkalaemia",
+      "category": "management",
+      "label": "Hyperkalaemia Management",
+      "aliases": [
+        "treat hyperkalaemia", "high potassium treatment", "calcium gluconate",
+        "insulin dextrose", "dextrose and insulin", "nebulised salbutamol for potassium",
+        "calcium resonium", "potassium binders", "sodium bicarbonate for k",
+        "emergency hyperkalaemia", "manage potassium", "lower potassium"
+      ],
+      "patterns": [
+        "hyperkalaemia|high.*potassium|elevated.*potassium|k.*elevated",
+        "calcium.*gluconate|gluconate.*calcium",
+        "insulin.*dextrose|dextrose.*insulin",
+        "salbutamol.*potassium|nebulised.*salbutamol",
+        "calcium.*resonium|potassium.*binder",
+        "lower.*potassium|manage.*potassium"
+      ]
+    },
+
+    "mgmt_stop_nephrotoxin": {
+      "id": "mgmt_stop_nephrotoxin",
+      "category": "management",
+      "label": "Stop Nephrotoxic Drugs",
+      "aliases": [
+        "stop ibuprofen", "stop nsaid", "withhold nephrotoxin",
+        "stop metformin", "withhold metformin", "stop contrast",
+        "avoid nephrotoxic drugs", "review medications for renal safety",
+        "check renal dosing", "renally dose adjust"
+      ],
+      "patterns": [
+        "stop.*ibuprofen|stop.*nsaid|withhold.*nsaid|stop.*diclofenac",
+        "stop.*metformin|withhold.*metformin",
+        "nephrotox|renal.*safe|renal.*dosing|dose.*adjust.*renal"
+      ]
+    },
+
+    "sys_diagnosis": {
+      "id": "sys_diagnosis",
+      "category": "system",
+      "label": "Diagnosis Submission",
+      "aliases": [
+        "my diagnosis is", "i think this is", "this is a case of",
+        "the diagnosis is", "i believe the patient has", "diagnosis",
+        "this patient has", "the most likely diagnosis", "probable diagnosis",
+        "final diagnosis", "working diagnosis", "differential diagnosis"
+      ],
+      "patterns": [
+        "my.*diagnosis|diagnosis.*is|i.*think.*is|i.*believe.*has",
+        "most.*likely.*diagnosis|probable.*diagnosis|final.*diagnosis",
+        "working.*diagnosis|differential"
+      ]
+    },
+
+    "sys_summary": {
+      "id": "sys_summary",
+      "category": "system",
+      "label": "Case Summary Request",
+      "aliases": [
+        "summarise the case", "summarize the case", "what have we found",
+        "case summary", "what is the summary", "give me a summary",
+        "what do we know so far", "review the findings", "present the case"
+      ],
+      "patterns": [
+        "summarise|summarize|summary|what.*found|what.*know.*so far",
+        "present.*case|review.*finding|case.*overview"
+      ]
+    },
+
+    "sys_score": {
+      "id": "sys_score",
+      "category": "system",
+      "label": "Score Request",
+      "aliases": [
+        "what is my score", "how many points", "show score", "score",
+        "how am i doing", "performance", "mark", "grade"
+      ],
+      "patterns": [
+        "score|points|how.*doing|performance|mark|grade|how.*well"
+      ]
+    }
+  }
+}
